@@ -39,6 +39,6 @@ Future<void> addToWhatsAppService(List<Gif> selectedGifs) async {
   try {
     await stickerPack.sendToWhatsApp();
   } on WhatsappStickersException catch (e) {
-    print(e.cause);
+    throw Exception(e.cause);
   }
 }

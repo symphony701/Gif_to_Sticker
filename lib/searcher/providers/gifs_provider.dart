@@ -16,4 +16,9 @@ class GifProvider with ChangeNotifier {
     _gifs.remove(gif);
     notifyListeners();
   }
+
+  void clearGifs() {
+    _gifs.clear();
+    notifyListeners();
+  }
 }

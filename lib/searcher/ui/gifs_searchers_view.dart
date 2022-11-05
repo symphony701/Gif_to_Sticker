@@ -24,10 +24,14 @@ class _GifSearchViewState extends State<GifSearchView> {
   StreamController<String> streamController = StreamController();
 
   Future<void> _fetchGifs(String keyword) async {
-    setState(() {
-      gifs = [];
-    });
     GifService service = GifService();
+    if (gifs.isNotEmpty) {
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    }
     gifs = await service.getSearcherGif(keyword: keyword);
     setState(() {});
   }
@@ -54,6 +58,7 @@ class _GifSearchViewState extends State<GifSearchView> {
     GifProvider gifProvider = Provider.of<GifProvider>(context);
     return Scaffold(
       backgroundColor: const Color.fromARGB(96, 53, 53, 53),
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,13 +93,6 @@ class _GifSearchViewState extends State<GifSearchView> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextFormField(
               onChanged: (value) {
-                /*if (value.isNotEmpty) _fetchGifs(value.toString());
-                if (value.isEmpty) {
-                  setState(() {
-                    gifs = [];
-                  });
-                }*/
-                //myMetaRef.child("isTyping").set(true);
                 streamController.add(value);
               },
               style: GoogleFonts.poppins(
@@ -142,21 +140,68 @@ class _GifSearchViewState extends State<GifSearchView> {
             ),
           ),
           Expanded(
-            child: MasonryGridView.count(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              physics: const BouncingScrollPhysics(),
-              itemCount: gifs.length,
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 4,
-              itemBuilder: (context, index) {
-                return ImageSearch(
-                  data: gifs[index],
-                  onTap: (singleGif) => gifProvider.addGif(singleGif),
-                  onDelete: (singleGif) => gifProvider.removeGif(singleGif),
-                );
-              },
-            ),
+            child: gifs.isNotEmpty
+                ? MasonryGridView.count(
+                    controller: scrollController,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: gifs.length,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 4,
+                    itemBuilder: (context, index) {
+                      return ImageSearch(
+                        data: gifs[index],
+                        onTap: (singleGif) {
+                          if (gifProvider.gifsCount < 5) {
+                            gifProvider.addGif(singleGif);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'You can only add 3 to 5 GIFs',
+                                  style: TextStyle(
+                                    color: Colors.cyan,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                backgroundColor:
+                                    Color.fromARGB(255, 53, 53, 53),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/nosearch.webp',
+                          height: MediaQuery.of(context).size.height * 0.3,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Text(
+                          'No GIFs Searcher',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+          Container(
+            height: 60,
+            width: double.infinity,
+            color: Colors.transparent,
           ),
         ],
       ),
