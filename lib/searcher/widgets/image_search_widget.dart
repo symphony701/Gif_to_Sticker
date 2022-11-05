@@ -29,7 +29,7 @@ class _ImageSearchState extends State<ImageSearch> {
       },
       child: Container(
         color: Colors.transparent,
-        height: widget.data!.height,
+        height: widget.data!.height! - 5,
         child: Stack(
           children: [
             Image.network(

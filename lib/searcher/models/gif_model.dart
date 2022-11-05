@@ -9,6 +9,7 @@ class Gif {
   String? nanoUrl;
   String? nameFile;
   String? urlWebp;
+  String? urlWebm;
 
   Gif({this.url, this.width, this.height});
 
@@ -23,5 +24,6 @@ class Gif {
     mediumUrl = json['media_formats']['mediumgif']['url'];
     mediumWidth = json['media_formats']['mediumgif']['dims'][0].toDouble();
     mediumHeight = json['media_formats']['mediumgif']['dims'][1].toDouble();
+    urlWebm = json['media_formats']['tinywebm']['url'];
   }
 }

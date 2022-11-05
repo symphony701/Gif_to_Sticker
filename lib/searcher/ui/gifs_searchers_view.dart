@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gif_to_sticker/searcher/models/gif_model.dart';
@@ -7,6 +9,7 @@ import 'package:gif_to_sticker/searcher/widgets/appbar_icon.dart';
 import 'package:gif_to_sticker/searcher/widgets/image_search_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class GifSearchView extends StatefulWidget {
   const GifSearchView({super.key});
@@ -18,6 +21,7 @@ class GifSearchView extends StatefulWidget {
 class _GifSearchViewState extends State<GifSearchView> {
   List<Gif> gifs = [];
   final scrollController = ScrollController();
+  StreamController<String> streamController = StreamController();
 
   Future<void> _fetchGifs(String keyword) async {
     setState(() {
@@ -30,6 +34,18 @@ class _GifSearchViewState extends State<GifSearchView> {
 
   @override
   void initState() {
+    streamController.stream
+        .debounce(const Duration(seconds: 1))
+        .listen((value) => {
+              if (value.isNotEmpty)
+                {_fetchGifs(value.toString())}
+              else if (value.isEmpty)
+                {
+                  setState(() {
+                    gifs = [];
+                  })
+                }
+            });
     super.initState();
   }
 
@@ -72,12 +88,14 @@ class _GifSearchViewState extends State<GifSearchView> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextFormField(
               onChanged: (value) {
-                if (value.isNotEmpty) _fetchGifs(value.toString());
+                /*if (value.isNotEmpty) _fetchGifs(value.toString());
                 if (value.isEmpty) {
                   setState(() {
                     gifs = [];
                   });
-                }
+                }*/
+                //myMetaRef.child("isTyping").set(true);
+                streamController.add(value);
               },
               style: GoogleFonts.poppins(
                 color: Colors.white,
@@ -129,7 +147,7 @@ class _GifSearchViewState extends State<GifSearchView> {
               physics: const BouncingScrollPhysics(),
               itemCount: gifs.length,
               crossAxisCount: 2,
-              mainAxisSpacing: 4,
+              mainAxisSpacing: 0,
               crossAxisSpacing: 4,
               itemBuilder: (context, index) {
                 return ImageSearch(
