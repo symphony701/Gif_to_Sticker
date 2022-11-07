@@ -18,7 +18,7 @@ class _ImageSearchState extends State<ImageSearch> {
       onTap: () => widget.onTap!(widget.data!),
       child: Container(
         color: Colors.transparent,
-        height: widget.data!.height! - 5,
+        height: widget.data!.height!,
         child: Image.network(
           widget.data!.url!,
           fit: BoxFit.cover,

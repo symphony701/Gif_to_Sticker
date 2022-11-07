@@ -4,14 +4,53 @@ import 'package:gif_to_sticker/searcher/providers/gifs_provider.dart';
 import 'package:gif_to_sticker/searcher/services/add_to_whatsapp.dart';
 import 'package:gif_to_sticker/searcher/services/convert_to_webp_service.dart';
 import 'package:gif_to_sticker/searcher/widgets/add_to_whatsapp_widget.dart';
+import 'package:gif_to_sticker/searcher/widgets/banner_ad.dart';
 import 'package:gif_to_sticker/searcher/widgets/error_dialog.dart';
 import 'package:gif_to_sticker/searcher/widgets/list_tile_gif.dart';
 import 'package:gif_to_sticker/searcher/widgets/loading_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-class SavedGifView extends StatelessWidget {
+class SavedGifView extends StatefulWidget {
   const SavedGifView({super.key});
+
+  @override
+  State<SavedGifView> createState() => _SavedGifViewState();
+}
+
+class _SavedGifViewState extends State<SavedGifView> {
+  final BannerAd searchViewBannerAd =
+      myBanner('ca-app-pub-3940256099942544/6300978111');
+  AdWidget? adWidget;
+  late InterstitialAd _interstitialAd;
+  bool _isInterstitialAdReady = false;
+  bool _isInProcess = false;
+
+  void _initInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          _interstitialAd = ad;
+          _isInterstitialAdReady = true;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          _isInterstitialAdReady = false;
+          _interstitialAd.dispose();
+        },
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    _initInterstitialAd();
+    searchViewBannerAd.load();
+    adWidget = AdWidget(ad: searchViewBannerAd);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +116,16 @@ class SavedGifView extends StatelessWidget {
           Container(
             height: 60,
             width: double.infinity,
-            color: Colors.red,
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            child: adWidget,
           ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
         onTap: () async {
-          if (gifProvider.gifsCount < 3) {
+          if (gifProvider.gifsCount < 3 && !_isInProcess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
@@ -99,18 +140,30 @@ class SavedGifView extends StatelessWidget {
             );
           } else {
             try {
+              setState(() {
+                _isInProcess = true;
+              });
               showDialog(
                   context: context,
                   builder: (_) => const LoadingDialog(),
                   barrierDismissible: false);
               List<Gif> gifs = gifProvider.gifs;
+              if (_isInterstitialAdReady) {
+                _interstitialAd.show();
+              }
               gifs = await gifConverted(gifs);
               await addToWhatsAppService(gifs);
+              setState(() {
+                _isInProcess = false;
+              });
               // ignore: use_build_context_synchronously
               Navigator.pop(context);
               gifProvider.clearGifs();
             } catch (e) {
               Navigator.pop(context);
+              setState(() {
+                _isInProcess = false;
+              });
               showDialog(
                   context: context,
                   builder: (_) => const ErrorDialog(),

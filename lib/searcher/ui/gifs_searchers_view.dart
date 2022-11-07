@@ -25,8 +25,9 @@ class _GifSearchViewState extends State<GifSearchView> {
   final scrollController = ScrollController();
   StreamController<String> streamController = StreamController();
   GifService service = GifService();
-  BannerAd searchViewBannerAd = myBanner;
-  final AdWidget adWidget = AdWidget(ad: myBanner);
+  final BannerAd searchViewBannerAd =
+      myBanner('ca-app-pub-3940256099942544/6300978111');
+  AdWidget? adWidget;
 
   Future<void> _fetchGifs(String keyword) async {
     if (gifs.isNotEmpty) {
@@ -55,6 +56,7 @@ class _GifSearchViewState extends State<GifSearchView> {
                 }
             });
     searchViewBannerAd.load();
+    adWidget = AdWidget(ad: searchViewBannerAd);
     super.initState();
   }
 
@@ -153,7 +155,7 @@ class _GifSearchViewState extends State<GifSearchView> {
                     physics: const BouncingScrollPhysics(),
                     itemCount: gifs.length,
                     crossAxisCount: 2,
-                    mainAxisSpacing: 0,
+                    mainAxisSpacing: 4,
                     crossAxisSpacing: 4,
                     itemBuilder: (context, index) {
                       return ImageSearch(
