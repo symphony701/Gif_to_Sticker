@@ -1,14 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gif_to_sticker">
+    package="com.example.gif_to_sticker"
+    >
     <uses-permission android:name="android.permission.INTERNET"/>
     <queries>
         <package android:name="com.whatsapp" />
     </queries>
    <application
         android:label="gif_to_sticker"
-        
         android:icon="@mipmap/ic_launcher">
-        
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9834343278443778~3615735473"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
