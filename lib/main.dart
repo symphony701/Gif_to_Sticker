@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gif_to_sticker/searcher/providers/gifs_provider.dart';
 import 'package:gif_to_sticker/searcher/ui/gifs_searchers_view.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -6,8 +6,10 @@ import 'package:gif_to_sticker/searcher/models/gif_model.dart';
 import 'package:gif_to_sticker/searcher/providers/gifs_provider.dart';
 import 'package:gif_to_sticker/searcher/services/gift_service.dart';
 import 'package:gif_to_sticker/searcher/widgets/appbar_icon.dart';
+import 'package:gif_to_sticker/searcher/widgets/banner_ad.dart';
 import 'package:gif_to_sticker/searcher/widgets/image_search_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -22,9 +24,11 @@ class _GifSearchViewState extends State<GifSearchView> {
   List<Gif> gifs = [];
   final scrollController = ScrollController();
   StreamController<String> streamController = StreamController();
+  GifService service = GifService();
+  BannerAd searchViewBannerAd = myBanner;
+  final AdWidget adWidget = AdWidget(ad: myBanner);
 
   Future<void> _fetchGifs(String keyword) async {
-    GifService service = GifService();
     if (gifs.isNotEmpty) {
       scrollController.animateTo(
         scrollController.position.minScrollExtent,
@@ -50,6 +54,7 @@ class _GifSearchViewState extends State<GifSearchView> {
                   })
                 }
             });
+    searchViewBannerAd.load();
     super.initState();
   }
 
@@ -202,6 +207,8 @@ class _GifSearchViewState extends State<GifSearchView> {
             height: 60,
             width: double.infinity,
             color: Colors.transparent,
+            alignment: Alignment.center,
+            child: adWidget,
           ),
         ],
       ),
