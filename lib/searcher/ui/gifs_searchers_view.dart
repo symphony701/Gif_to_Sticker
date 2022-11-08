@@ -26,7 +26,7 @@ class _GifSearchViewState extends State<GifSearchView> {
   StreamController<String> streamController = StreamController();
   GifService service = GifService();
   final BannerAd searchViewBannerAd =
-      myBanner('ca-app-pub-3940256099942544/6300978111');
+      myBanner('ca-app-pub-9834343278443778/2211116474');
   AdWidget? adWidget;
 
   Future<void> _fetchGifs(String keyword) async {

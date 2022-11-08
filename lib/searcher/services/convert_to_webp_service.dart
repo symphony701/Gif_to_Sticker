@@ -48,9 +48,6 @@ Future<String> convertToWebp(String gifUrl, double width, double height) async {
     String scrapperResize = responseResize.body.toString();
     String linkwebp = scrapperResize.substring(29, 72);
     linkwebp = 'https:$linkwebp';
-
-    print('Webp link: $linkwebp');
-
     return linkwebp;
   } catch (e) {
     throw Exception(e);
@@ -61,7 +58,6 @@ Future<List<Gif>> gifConverted(List<Gif> gifsSelected) async {
   for (var gif in gifsSelected) {
     gif.urlWebp =
         await convertToWebp(gif.url!, gif.mediumWidth!, gif.mediumHeight!);
-    print(gif.urlWebp);
   }
   return gifsSelected;
 }

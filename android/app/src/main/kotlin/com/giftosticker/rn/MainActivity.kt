@@ -1,4 +1,4 @@
-package com.example.gif_to_sticker
+package com.giftosticker.rn
 
 import io.flutter.embedding.android.FlutterActivity
 

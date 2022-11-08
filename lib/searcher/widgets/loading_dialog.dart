@@ -6,7 +6,7 @@ class LoadingDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Color.fromARGB(255, 53, 53, 53),
+      backgroundColor: const Color.fromARGB(255, 53, 53, 53),
       content: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

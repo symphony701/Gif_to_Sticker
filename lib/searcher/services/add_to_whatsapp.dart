@@ -20,9 +20,9 @@ Future<void> addToWhatsAppService(List<Gif> selectedGifs) async {
 
   var stickerPack = WhatsappStickers(
     identifier: 'gifsticker${DateTime.now().toString().replaceAll(':', '')}',
-    name: 'Stickers Generated in GIF to Sticker ${DateTime.now().toString()}',
+    name: 'Stickers Generated in GIF to Sticker App',
     publisher: 'GIFs to Stickers',
-    trayImageFileName: WhatsappStickerImage.fromAsset('assets/tray_Cuppy.png'),
+    trayImageFileName: WhatsappStickerImage.fromAsset('assets/icon.png'),
     publisherWebsite: '',
     privacyPolicyWebsite: '',
     licenseAgreementWebsite: '',

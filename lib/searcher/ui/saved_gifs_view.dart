@@ -21,7 +21,7 @@ class SavedGifView extends StatefulWidget {
 
 class _SavedGifViewState extends State<SavedGifView> {
   final BannerAd searchViewBannerAd =
-      myBanner('ca-app-pub-3940256099942544/6300978111');
+      myBanner('ca-app-pub-9834343278443778/6231226304');
   AdWidget? adWidget;
   late InterstitialAd _interstitialAd;
   bool _isInterstitialAdReady = false;
@@ -29,8 +29,8 @@ class _SavedGifViewState extends State<SavedGifView> {
 
   void _initInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
-      request: AdRequest(),
+      adUnitId: 'ca-app-pub-9834343278443778/9403404305',
+      request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {
           _interstitialAd = ad;

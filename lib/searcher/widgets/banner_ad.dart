@@ -4,7 +4,7 @@ BannerAd myBanner(String adUnitId) {
   return BannerAd(
     adUnitId: adUnitId,
     size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
+    request: const AdRequest(),
+    listener: const BannerAdListener(),
   );
 }
