@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gif_to_sticker/searcher/models/gif_model.dart';
 import 'package:gif_to_sticker/searcher/providers/gifs_provider.dart';
 import 'package:gif_to_sticker/searcher/services/add_to_whatsapp.dart';
-import 'package:gif_to_sticker/searcher/services/convert_to_webp_service.dart';
 import 'package:gif_to_sticker/searcher/widgets/add_to_whatsapp_widget.dart';
 import 'package:gif_to_sticker/searcher/widgets/banner_ad.dart';
 import 'package:gif_to_sticker/searcher/widgets/error_dialog.dart';
@@ -21,7 +20,7 @@ class SavedGifView extends StatefulWidget {
 
 class _SavedGifViewState extends State<SavedGifView> {
   final BannerAd searchViewBannerAd =
-      myBanner('ca-app-pub-9834343278443778/6231226304');
+      myBanner('ca-app-pub-3940256099942544/6300978111');
   AdWidget? adWidget;
   late InterstitialAd _interstitialAd;
   bool _isInterstitialAdReady = false;
@@ -29,7 +28,7 @@ class _SavedGifViewState extends State<SavedGifView> {
 
   void _initInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-9834343278443778/9403404305',
+      adUnitId: '	ca-app-pub-3940256099942544/1033173712',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {
@@ -151,7 +150,6 @@ class _SavedGifViewState extends State<SavedGifView> {
               if (_isInterstitialAdReady) {
                 _interstitialAd.show();
               }
-              gifs = await gifConverted(gifs);
               await addToWhatsAppService(gifs);
               setState(() {
                 _isInProcess = false;

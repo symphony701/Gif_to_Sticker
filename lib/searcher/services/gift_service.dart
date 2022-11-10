@@ -7,7 +7,7 @@ class GifService {
     keyword = keyword.trim().replaceAll(' ', '_');
     final response = await http.get(
         Uri.parse(
-            'https://tenor.googleapis.com/v2/search?q=$keyword&key=AIzaSyAz4plJnpG03g4J3BxSwquDvoiMLPEvwAs&client_key=GIFtoSticker&limit=50'),
+            'https://tenor.googleapis.com/v2/search?q=$keyword&key=AIzaSyAz4plJnpG03g4J3BxSwquDvoiMLPEvwAs&client_key=GIFtoSticker&limit=100'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
